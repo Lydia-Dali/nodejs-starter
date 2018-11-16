@@ -4,7 +4,9 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     type: DataTypes.STRING,
     url: DataTypes.STRING
-  }, {});
+  }, {
+    tableName: 'medias'
+  });
   Media.associate = function(models) {
     Media.belongsToMany(models.Tag, {through: 'MediaTags', foreignKey : 'mediaId'})
   };

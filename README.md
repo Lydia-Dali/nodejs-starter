@@ -1,4 +1,4 @@
-# Préréquis
+# Pré-réquis
 - Générer un nouvelle app express grace au générateur express (express-cli)
 `express nodejs-starter --no-view --git`
 - installer les dépendences nécéssaire à la configuration
@@ -134,7 +134,9 @@ app.use('/medias', mediasRouter);
 ```
 ## Actions
 implémenter les actions nécessaire à la gestion des ressources, on appelle ça un CRUD
+### Tag
 - [CREATE](./routes/tags.js#L27)
 - [READ](./routes/tags.js#L14)
 - [UPDATE](./routes/tags.js#L42)
 - [DESTROY](./routes/tags.js#L64)
+### Media
