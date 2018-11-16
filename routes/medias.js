@@ -34,6 +34,7 @@ router.post('/create', function(req, res, next) {
       url: req.body.url
     })
     .then((newMedia) => {
+      // si une liste d'id à été fourni alors on lie les tags correspondants au média
       if(req.body.tagIds){
         let tagIds = req.body.tagIds.split(",")
         Tag.findAll({where: {id: tagIds}})
@@ -59,6 +60,7 @@ router.put('/edit/:id', function(req, res, next) {
         media.url = req.body.url;
         media.save()
         .then((updatedMedia) => {
+          // si une liste d'id à été fourni alors on lie les tags correspondants au média
           if(req.body.tagIds){
             let tagIds = req.body.tagIds.split(",")
             Tag.findAll({where: {id: tagIds}})
@@ -83,16 +85,20 @@ router.delete('/:id', function(req, res, next) {
   Media.findByPk(req.params.id)
   .then((media) => {
     if(media){
-      media.destroy()
-      .then((media) => res.json({message: 'Media has been deleted'}))
-      .catch((error) => res.status(500).json({message: error}))
+      media.setTags([])
+      .then((result) => {
+        media.save()
+        .then((result) => {
+          media.destroy()
+          .then((media) => res.json({message: 'Media has been deleted'}))
+          .catch((error) => res.status(500).json({message: error}))
+        })
+      })
     } else {
       res.status(404).json({message: `Media does not exist with id: ${req.params.id}`})
     }
   })
   .catch((error) => res.status(500).json({message: error}))
 });
-
-
 
 module.exports = router;

@@ -133,10 +133,14 @@ app.use('/tags', tagsRouter);
 app.use('/medias', mediasRouter);
 ```
 ## Actions
-implémenter les actions nécessaire à la gestion des ressources, on appelle ça un CRUD
+Implémenter les actions nécessaire à la gestion des ressources, on appelle ça un CRUD
 ### Tag
 - [CREATE](./routes/tags.js#L27)
-- [READ](./routes/tags.js#L14)
+- [READ](./routes/tags.js#L15)
 - [UPDATE](./routes/tags.js#L42)
 - [DESTROY](./routes/tags.js#L64)
 ### Media
+- [CREATE](./routes/medias.js#L29)
+- [READ](./routes/medias.js#L16)
+- [UPDATE](./routes/medias.js#L52)
+- [DESTROY](./routes/medias.js#L82)
