@@ -139,8 +139,50 @@ Implémenter les actions nécessaire à la gestion des ressources, on appelle ç
 - [READ](./routes/tags.js#L15)
 - [UPDATE](./routes/tags.js#L42)
 - [DESTROY](./routes/tags.js#L64)
+```text
+Récupérer la liste de tout les médias existant
+GET http://localhost:3000/tags
+result = [{id: 1, name: "myTagName"}, {id: 2, name: "myTagName2"}, ...]
+
+Creer un nouveau tag lié aux tags 1, 2 et 3 (id)
+POST http://localhost:3000/tags/create
+body = {name: "tagName"}
+
+Récupérer un tag donné
+GET http://localhost:3000/tags/1
+{id: 1, name: "mytagName"}
+
+Editer un tag donné
+PUT http://localhost:3000/tags/edit/1
+body = {name: "newTagName"}
+
+Supprimer un tag donné
+DELETE http://localhost:3000/tags/1
+result "Media has been deleted !"
+```
 ### Media
 - [CREATE](./routes/medias.js#L29)
 - [READ](./routes/medias.js#L16)
 - [UPDATE](./routes/medias.js#L52)
 - [DESTROY](./routes/medias.js#L82)
+```text
+Récupérer la liste de tout les médias existant
+GET http://localhost:3000/medias
+result = [{id: 1, name: "myMediaName"}, {id: 2, name: "myMediaName2"}, ...]
+
+Creer un nouveau média lié aux tags 1, 2 et 3 (id)
+POST http://localhost:3000/medias/create
+body = {name: "mediaName", type: "mediaType", url: "mediaUrl", tagIds: "1,2,3"}
+
+Récupérer un média donné
+GET http://localhost:3000/medias/1
+{id: 1, name: "myMediaName"}
+
+Editer un média donné
+PUT http://localhost:3000/medias/edit/1
+body = {name: "newMediaName", type: "newMediaType", url: "newMediaUrl", tagIds: "3"}
+
+Supprimer un média donné
+DELETE http://localhost:3000/medias/1
+result "Media has been deleted !"
+```
