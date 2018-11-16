@@ -61,7 +61,7 @@ Il faut ensuite remplir le fichier `config.json` avec les bonnes infos pour la c
 }
 ```
 
-## Création de modèles
+## Création des modèles
 Dans une application web, un modèle est une classe liée à une table de la base de donnée, c'est lui qui gèrera la connexion avec la table concerné. Même si le générateur de sequelize le fait pour nous, il faut savoir que le modèle doit être au singulier contrairement à la table qui elle est au pluriel.
 Nous allons ici créer 3 modèles, 2 pour la relation n:n et 1 qui servira pour la jointure des deux, car 1 Media peut avoir plusieurs tags et 1 Tag peut avoir plusieurs Media
 - Media (table: medias) n:n
@@ -118,3 +118,25 @@ MediaTag.associate = function(models) {
   MediaTag.belongsTo(models.Tag)
 };
 ```
+
+# Routage
+Nous allons maintenant avoir besoin de créer les routes pour la gestions des ressources
+Créer deux nouveaux fichiers dans le dossier `/routes`
+- `/routes/tags.js`
+- `/routes/medias.js`
+Il faut ensuite importer les deux fichiers dans `app.js` et les utiliser en tant que routeur afin que les routes soit accessible.
+```javascript
+var tagsRouter = require('./routes/tags');
+var mediasRouter = require('./routes/medias');
+...
+app.use('/tags', tagsRouter);
+app.use('/medias', mediasRouter);
+```
+## Actions
+implémenter les actions nécessaire à la gestion des ressources, on appelle ça un CRUD
+- Create
+- Read
+- Update
+- Destroy
+[CRUD pour le modèle TAG](./routes/tags.js)
+[CRUD pour le modèle Media](./routes/medias.js)
