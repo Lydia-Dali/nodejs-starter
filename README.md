@@ -186,3 +186,11 @@ Supprimer un média donné
 DELETE http://localhost:3000/medias/1
 result "Media has been deleted !"
 ```
+
+# Gestions utilisateurs
+## Création du modèle et des migrations
+```shell
+sequelize model:generate --name User --attributes firstName:STRING,lastName:STRING,email:STRING,password:STRING,isAdmin:BOOLEAN
+
+sequelize db:migrate
+```
