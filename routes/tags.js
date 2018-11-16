@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const Tag = require("../models").Tag
+const Media = require("../models").Media
 
 /* GET tags listing. */
 router.get('/', function(req, res, next) {
@@ -13,7 +14,7 @@ router.get('/', function(req, res, next) {
 
 /* GET tag by id. */
 router.get('/:id', function(req, res, next) {
-  Tag.findByPk(req.params.id)
+  Tag.findByPk(req.params.id, {include: [Media]})
   .then((tag) => {
     if(tag){
       res.json({tag})
