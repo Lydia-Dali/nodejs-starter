@@ -11,8 +11,8 @@ mysql > create database my_db_name;
 # Query OK, 1 row affected (0.00 sec)
 mysql > exit
 ```
-# Configuration
-## Base de donnée
+# Base de donnée
+## Configuration
 Si ce n'est pas déjà fait, installer le cli de sequelize
 ```shell
 npm install -g sequelize-cli
@@ -27,13 +27,14 @@ sequelize init
 # Successfully created migrations folder at "/nodeProjects/nodejs-starter/migrations".
 # Successfully created seeders folder at "/nodeProjects/nodejs-starter/seeders".
 ```
-Comme on peut le constater, le sli sequelize nous à généré 3 nouveaux dossiers
+Comme on peut le constater, le cli sequelize nous à généré 3 nouveaux dossiers et 1 fichier
 ```
 /config/config.json
+/models
 /migrations
 /seeders
 ```
-Il faut ensuite remplir le fichier `config.json` avec les bonne infos pour la connexion à la base de donnée.
+Il faut ensuite remplir le fichier `config.json` avec les bonnes infos pour la connexion à la base de donnée.
 ```json
 {
   "development": {
@@ -58,4 +59,62 @@ Il faut ensuite remplir le fichier `config.json` avec les bonne infos pour la co
     "dialect": "mysql"
   }
 }
+```
+
+## Création de modèles
+Dans une application web, un modèle est une classe liée à une table de la base de donnée, c'est lui qui gèrera la connexion avec la table concerné. Même si le générateur de sequelize le fait pour nous, il faut savoir que le modèle doit être au singulier contrairement à la table qui elle est au pluriel.
+Nous allons ici créer 3 modèles, 2 pour la relation n:n et 1 qui servira pour la jointure des deux, car 1 Media peut avoir plusieurs tags et 1 Tag peut avoir plusieurs Media
+- Media (table: medias) n:n
+- Tag (table: tags) n:n
+- MediaTag (table: media_tags) 1:1
+Pour ce faire nous allons utiliser le générateur sequelize de la manière suivante
+```shell
+sequelize model:generate --name Media --attributes name:STRING,type:STRING,url:STRING
+sequelize model:generate --name Tag --attributes name:STRING
+sequelize model:generate --name MediaTag --attributes mediaId:INTEGER,tagId:INTEGER
+```
+Pour chaques modèle créé, sequelize nous génère 2 fichiers, 1 modèle et 1 migration
+
+## Jointure des tables
+Dans notre exemple nous utilisons une relation n:n (many-to-many) ce qui n'ecessite donc une table de jointure (media_tags) c'est elle qui va porter les références de Media et de Tag.
+Dans le fichier de migration de MediaTag, nous allons devoir ajouter manuellement les références de la manière suivante :
+```javascript
+mediaId: {
+  type: Sequelize.INTEGER,
+  foreignKey: true,
+  allowNull: false,
+  references: {
+    model: "Medias", // le model peut être une chaine de caractère représentant la table (pluriel)
+    key: 'id',
+  }
+},
+tagId: {
+  type: Sequelize.INTEGER,
+  foreignKey: true,
+  allowNull: false,
+  references: {
+    model: "Tags", // le model peut aussi être un objet JS représentant le modèle lui même (singulier (import nécessaire))
+    key: 'id',
+  }
+},
+```
+Nous devons ensuite gérer las associations dans chaque modèle
+/models/media.js
+```javascript
+Media.associate = function(models) {
+    Media.belongsToMany(models.Tag, {through: 'MediaTags', foreignKey : 'MediaId'})
+  };
+```
+/models/tag.js
+```javascript
+Tag.associate = function(models) {
+    Tag.belongsToMany(models.Tag, {through: 'MediaTags', foreignKey : 'TagId'})
+  };
+```
+/models/mediatag.js
+```javascript
+MediaTag.associate = function(models) {
+  MediaTag.belongsTo(models.Media)
+  MediaTag.belongsTo(models.Tag)
+};
 ```
