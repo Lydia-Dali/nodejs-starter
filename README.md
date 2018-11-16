@@ -144,7 +144,7 @@ Récupérer la liste de tout les médias existant
 GET http://localhost:3000/tags
 result = [{id: 1, name: "myTagName"}, {id: 2, name: "myTagName2"}, ...]
 
-Creer un nouveau tag lié aux tags 1, 2 et 3 (id)
+Creer un nouveau tag
 POST http://localhost:3000/tags/create
 body = {name: "tagName"}
 
