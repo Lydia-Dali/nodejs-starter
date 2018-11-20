@@ -197,3 +197,71 @@ sequelize db:migrate
 ## Création des routes
 - [routes/users.js](./routes/users.js)
 - [routes/auth.js](./routes/auth.js)
+
+## Création de l'authentification
+### Signin
+installation des librairies
+```shell
+npm i --save passport passport-local passport-jwt 
+```
+`passport.js` est une librairie qui permet de gérer tout type d'authentification utilisateur (strategies). nous utiliserons `local` pour la connexion par email et mot de passe, et `jwt` pour la protections des routes.
+- [Configuration de la strategie local](./routes/strategies/local.js)
+- [Utilisation sur la route auth/signin](./routes/auth.js#L7)
+
+### Routes protégés
+- [Configuration de la strategie jwt](./routes/strategies/jwt.js)
+- [Protection d'une route](./routes/users.js#L7)
+```shell
+POST /auth/signup # body = {firstname: 'john', lastName: 'DOE', email: 'john-doe@domain.com', password: 'mypass'}
+# It return 
+{
+    "user": {
+        "id": 1,
+        "firstName": "john",
+        "lastName": "DOE",
+        "email": "john-doe@domain.com",
+        "password": "$2b$10$6X5cmJTDsWoJ7XB.fBnNm.geSVSUJX15x7caRk1JvIgmRuJefNNDi",
+        "isAdmin": false,
+        "updatedAt": "2018-11-20T22:26:04.439Z",
+        "createdAt": "2018-11-20T22:26:04.439Z"
+    }
+}
+
+POST /auth/signin # body = {email: 'john-doe@domain.com', password: 'mypass'}
+# It return
+{
+    "user": {
+        "id": 1,
+        "email": "john-doe@domain.com",
+        "isAdmin": false
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJqZWFuLWJlYmVyQGhvdG1haWwuZnIiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNTQyNzUyNzkwfQ.dbStYNlaXdpMzS-vo4VfxmFNEiJnbxA8C04sHN5RYCE"
+}
+
+GET /users # headers = {Authorization: "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJqZWFuLWJlYmVyQGhvdG1haWwuZnIiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNTQyNzUyNzkwfQ.dbStYNlaXdpMzS-vo4VfxmFNEiJnbxA8C04sHN5RYCE"}
+# It return
+{
+    "users": [
+        {
+            "id": 1,
+            "firstName": "john",
+            "lastName": "DOE",
+            "email": "john-doe@domain.com",
+            "password": "$2b$10$6X5cmJTDsWoJ7XB.fBnNm.geSVSUJX15x7caRk1JvIgmRuJefNNDi",
+            "isAdmin": false,
+            "updatedAt": "2018-11-20T22:26:04.439Z",
+            "createdAt": "2018-11-20T22:26:04.439Z"
+        },
+        {
+            "id": 2,
+            "firstName": "kevin",
+            "lastName": "MITNIK",
+            "email": "jean-beber@hotmail.fr",
+            "password": "$2b$10$6X5cmJTDsWoJ7XB.fBnNm.geSVSUJX15x7caRk1JvIgmRuJefNNDi",
+            "isAdmin": false,
+            "createdAt": "2018-11-20T22:26:04.000Z",
+            "updatedAt": "2018-11-20T22:26:04.000Z"
+        }
+    ]
+}
+```

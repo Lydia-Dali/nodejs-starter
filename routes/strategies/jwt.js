@@ -4,13 +4,11 @@ var JwtStrategy = require('passport-jwt').Strategy,
 const models = require("../../models");
 const User = models.User;
 
-var opts = {}
-
+var opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = 'your_jwt_secret';
 
 const jwtAuthStrategy = passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
-  // console.log("JWT STRATEGY", jwt_payload)
     User.findAll({where: {id: jwt_payload.id}})
     .then((users) => {
       if (users.length > 0) {
