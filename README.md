@@ -195,5 +195,5 @@ sequelize model:generate --name User --attributes firstName:STRING,lastName:STRI
 sequelize db:migrate
 ```
 ## Création des routes
-- routes/users.js
-- routes/auth.js
+- [routes/users.js](./routes/users.js)
+- [routes/auth.js](./routes/auth.js)

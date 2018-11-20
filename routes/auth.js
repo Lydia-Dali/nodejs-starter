@@ -1,30 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const User = require("../models").User
-const passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcrypt');
+const passport = require('passport');
 const jwt = require('jsonwebtoken');
-
-passport.use(new LocalStrategy({
-    usernameField: 'email',
-    passwordField: 'password',
-    session: false,
-  },
-  function(email, password, done) {
-    User.findOne({ email: email })
-    .then((user) => {
-      bcrypt.compare(password, user.dataValues.password, function(err, res) {
-        if(res){
-          return done(null, user.dataValues);
-        } else {
-          return done(null, false);
-        }
-      })
-    })
-    .catch(err => done(null, false))
-  }
-));
 
 /* GET users listing. */
 router.post('/signin', passport.authenticate('local', { session: false }),function(req, res, next) {
