@@ -256,7 +256,7 @@ GET /users # headers = {Authorization: "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXV
             "id": 2,
             "firstName": "kevin",
             "lastName": "MITNIK",
-            "email": "jean-beber@hotmail.fr",
+            "email": "kevin-mitnik@hotmail.fr",
             "password": "$2b$10$6X5cmJTDsWoJ7XB.fBnNm.geSVSUJX15x7caRk1JvIgmRuJefNNDi",
             "isAdmin": false,
             "createdAt": "2018-11-20T22:26:04.000Z",
