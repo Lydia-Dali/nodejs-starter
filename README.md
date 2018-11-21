@@ -265,3 +265,13 @@ GET /users # headers = {Authorization: "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXV
     ]
 }
 ```
+
+## Controllers
+Les controllers sont les fichiers qui doivent abriter les actions
+- 1 modèle à une ou plusieurs routes
+- 1 route correspont à une action
+
+Afin de garder un projet propre est structuré, il est recommender des déplacer les actions dans les controllers. les routeur doivent servir uniquement à créer la route et lier l'action concerné.
+
+Exemple d'application
+[Route index users](./routes/users.js#L7) => [Action index users](./controllers/usersController.js#L4)
