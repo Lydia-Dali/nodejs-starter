@@ -21,6 +21,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// Expose static /uploads folders to retrive upladed files.
+app.use('/uploads', express.static('uploads'));
 
 // Initialize auth strategies config
 localAuthStrategy;

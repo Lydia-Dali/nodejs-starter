@@ -275,3 +275,33 @@ Afin de garder un projet propre est structuré, il est recommender des déplacer
 
 Exemple d'application
 [Route index users](./routes/users.js#L7) => [Action index users](./controllers/usersController.js#L4)
+
+## Upload de fichier
+Premièrement nous devons créer un nouveau repertoire à la racine du projet, c'est ce repertoire qui abritera les fichiers uploadé et installer la librairie multer qui permet de gerer l'upload de fichier
+```shell
+mkdir uploads
+npm i --save multer
+```
+Il faut ensuite exposer ce repertoire de manière statique afin de pouvoir récupérer les fichiers via une url une fois uploadé.
+- Dans le `app.js`, ajouter la ligne qui suit `app.use('/uploads', express.static('uploads'));`
+- Dans le routeur `medias.js` [importer et configurer la librairie](./routes/medias.js#L6)
+- [Ajouter le middleware sur les routes concernées](./routes/medias.js#L24)
+- [Récupérer le nom original afin de recomposer et retourner l'url](./controllers/mediasController.js#L29)
+
+exemple de requete : 
+```shell
+POST /medias/create # body = (form-data) body = {file: 'your_file.png', name: 'my_media_name'}
+
+# It return
+{
+  "media": {
+      "id": 1,
+      "name": "my_media_name",
+      "type": "file",
+      "url": "localhost:3000/uploads/your_file.png",
+      "updatedAt": "2018-11-21T18:31:35.197Z",
+      "createdAt": "2018-11-21T18:31:35.197Z"
+  }
+}
+```
+

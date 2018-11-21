@@ -22,11 +22,11 @@ module.exports = {
   },
 
   create: function(req, res, next) {
-    if(req.body.name && req.body.type && req.body.url){
+    if(req.body.name && req.file){
       Media.create({
         name: req.body.name,
-        type: req.body.type,
-        url: req.body.url
+        type: 'file',
+        url: `${req.get('Host')}/uploads/${req.file.originalname}`
       })
       .then((newMedia) => {
         // si une liste d'id à été fourni alors on lie les tags correspondants au média
@@ -40,7 +40,7 @@ module.exports = {
       })
       .catch((error) => res.status(500).json({error}))
     } else {
-      res.status(500).json({message: "name or type or url cannot be blank"})
+      res.status(500).json({message: "name or file cannot be blank"})
     }
   },
 
