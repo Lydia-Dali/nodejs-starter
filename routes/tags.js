@@ -1,82 +1,21 @@
 var express = require('express');
 var router = express.Router();
-const Tag = require("../models").Tag
-const Media = require("../models").Media
+const tagsController = require('../controllers/tagsController')
 
 /* GET tags listing. */
-router.get('/', function(req, res, next) {
-  Tag.findAll()
-  .then((tags) => {
-    res.json({tags})
-  })
-  .catch((error) => res.status(500).json({message: error}))
-});
+router.get('/', tagsController.index);
 
 /* GET tag by id. */
-router.get('/:id', function(req, res, next) {
-  Tag.findByPk(req.params.id, {include: [Media]})
-  .then((tag) => {
-    if(tag){
-      res.json({tag})
-    } else {
-      res.status(404).json({message: `Tag does not exist with id: ${req.params.id}`})
-    }
-  })
-  .catch((error) => res.status(500).json({message: error}))
-});
+router.get('/:id', tagsController.show);
 
 /* POST new tag. */
-router.post('/create', function(req, res, next) {
-  if(req.body.name){
-    Tag.create({
-      name: req.body.name
-    })
-    .then((newTag) => {
-      res.json({tag: newTag})
-    })
-    .catch((error) => res.status(500).json({message: error}))
-  } else {
-    res.status(500).json({message: "name cannot be blank"})
-  }
-});
+router.post('/create', tagsController.create);
 
 /* PUT edit tag. */
-router.put('/edit/:id', function(req, res, next) {
-  Tag.findByPk(req.params.id)
-  .then((tag) => {
-    if(tag){
-      if(req.body.name){
-        tag.name = req.body.name;
-        tag.save()
-        .then((updatedTag) => {
-          res.json({tag: updatedTag})
-        })
-        .catch((error) => res.status(500).json({message: error}))
-      } else {
-        res.status(500).json({message: "name cannot be blank"})
-      }
-    } else {
-      res.status(404).json({message: `Tag does not exist with id: ${req.params.id}` })
-    }
-  })
-  .catch((error) => res.status(500).json({message: error}))
-});
+router.put('/edit/:id', tagsController.edit);
 
 /* DELETE existing tag. */
-router.delete('/:id', function(req, res, next) {
-  Tag.findByPk(req.params.id)
-  .then((tag) => {
-    if(tag){
-      tag.destroy()
-      .then((tag) => res.json({message: 'Tag has been deleted'}))
-      .catch((error) => res.status(500).json({message: error}))
-    } else {
-      res.status(404).json({message: `Tag does not exist with id: ${req.params.id}`})
-    }
-  })
-  .catch((error) => res.status(500).json({message: error}))
-});
-
+router.delete('/:id', tagsController.delete);
 
 
 module.exports = router;
