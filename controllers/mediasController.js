@@ -1,4 +1,6 @@
-const Media = require("../models").Media
+const models = require("../models");
+const Media = models.Media;
+const Tag = models.Tag;
 
 module.exports = {
   index: function(req, res, next) {
