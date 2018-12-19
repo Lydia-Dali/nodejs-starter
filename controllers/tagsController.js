@@ -1,6 +1,5 @@
 const models = require("../models")
 const Tag = models.Tag
-const Media = models.Media
 
 module.exports = {
   index: function(req, res, next) {
@@ -12,7 +11,7 @@ module.exports = {
   },
 
   show: function(req, res, next) {
-    Tag.findByPk(req.params.id, {include: [Media]})
+    Tag.findByPk(req.params.id, {include: ['medias']})
     .then((tag) => {
       if(tag){
         res.json({tag})
